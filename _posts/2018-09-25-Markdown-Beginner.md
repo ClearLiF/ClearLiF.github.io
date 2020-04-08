@@ -99,7 +99,8 @@ Github Pages - (If you have one)
       >> contentB
 
 > contentA
-  >> contentB
+>
+> > contentB
 
 之后的文本内容需要插入空行
 
@@ -121,7 +122,7 @@ Github Pages - (If you have one)
 
 ## 分割线
     ***
-	---
+    ---
 
 ## 表格
     | Tables        | Are           | Cool  |
