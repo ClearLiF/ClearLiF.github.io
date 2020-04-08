@@ -33,8 +33,8 @@ description_footer: 来自李琪的个人专栏！
 # using Gitalk
 gitalk:
   enable: true    #是否开启Gitalk评论
-  clientID: 52bbb620d9680fd85254                            #生成的clientID
-  clientSecret: d92cec378527800b0816d1bdd26dc71eb5dd0ccd    #生成的clientSecret
+  clientID: 6194ed1c4aed24fa5c20                            #生成的clientID
+  clientSecret: f593165a5d698999f50c5741c897c4996dd5ba38    #生成的clientSecret
   repo: ClearLiF.github.io    #仓库名称
   owner: ClearLiF    #github用户名
   admin: ClearLiF
@@ -50,7 +50,7 @@ ga_domain: auto
 
 friends: [
     {
-        title: "Linkedin - Xin YAO",
+        title: "Linkedin - ClearLi",
         href: "https://www.linkedin.com/in/%E4%BF%A1-%E5%A7%9A-947492167/"
     }
 ]
