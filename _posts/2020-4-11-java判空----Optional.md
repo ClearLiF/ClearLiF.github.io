@@ -36,7 +36,7 @@ if (user != null){
 
 这个判空类是jdk1.8新引入的。下面是他的api
 
-![](../img/123.png)
+![](/img/123.png)
 
 最重要的就是of和ofNullable对象，差别在于of不允许参数是null，而ofNullable则无限制。使用时首先**创建Optional对象**，将传入参数的判断交给**Optional**去执行。相当于Optional帮你做处理。下面是例子⬇⬇⬇⬇⬇
 
