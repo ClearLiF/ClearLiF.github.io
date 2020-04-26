@@ -46,11 +46,11 @@ $ make install
 ```shell
 /usr/local/nginx/sbin/nginx 启动命令
 重启：
-$ /usr/local/nginx/sbin/nginx –s reload
+$ /usr/local/nginx/sbin/nginx -s reload
 停止：
-$ /usr/local/nginx/sbin/nginx –s stop
+$ /usr/local/nginx/sbin/nginx -s stop
 测试配置文件是否正常：
-$ /usr/local/nginx/sbin/nginx –t 
+$ /usr/local/nginx/sbin/nginx -t 
 强制关闭：
 $ pkill nginx
 
@@ -120,15 +120,15 @@ global_defs {
 vrrp_script chk_nginx {
     script "/etc/keepalived/nginx_check.sh" #运行脚本，脚本内容下面有，就是起到一个nginx宕机以后，自动开启服务
     interval 2 #检测时间间隔
-    weight -20 #如果条件成立的话，则权重 -20
+    weight 10 #如果条件成立的话，则权重 -20
 }
 # 定义虚拟路由，VI_1 为虚拟路由的标示符，自己定义名称
 vrrp_instance VI_1 {
-    state MASTER #来决定主从
+    state BACKUP #来决定主从
     interface ens33 # 绑定虚拟 IP 的网络接口，根据自己的机器填写
-    virtual_router_id 121 # 虚拟路由的 ID 号， 两个节点设置必须一样
-    mcast_src_ip 192.168.206.22 #填写本机ip
-    priority 100 # 节点优先级,主要比从节点优先级高
+    virtual_router_id 222 # 虚拟路由的 ID 号， 两个节点设置必须一样
+    mcast_src_ip 192.168.206.23 #填写clear本机ip
+    priority 90 # 节点优先级,主要比从节点优先级高
     nopreempt # 优先级高的设置 nopreempt 解决异常恢复后再次抢占的问题
     advert_int 1 # 组播信息发送间隔，两个节点设置必须一样，默认 1s
     authentication {
@@ -242,6 +242,7 @@ virtual_server 10.10.10.3 1358 {
     }
 }
 
+
 ```
 
 注意下图的注释部分。我的版本必须注释掉 不然报错
@@ -306,10 +307,12 @@ systemctl kill keepalived 关闭
 
 ```shell
 #!/bin/bash
-A=`ps -C nginx –no-header |wc -l`
+A=`ps -C nginx --no-header |wc -l`
+# 判断nginx是否宕机，如果宕机了，尝试重启
 if [ $A -eq 0 ];then
     /usr/local/nginx/sbin/nginx
-    sleep 2
+    # 等待一小会再次检查nginx，如果没有启动成功，则停止keepalived，使其启动备用机
+    sleep 3
     if [ `ps -C nginx --no-header |wc -l` -eq 0 ];then
         killall keepalived
     fi
@@ -342,4 +345,21 @@ fi
 启动成功
 
 ![image-20200425001851453](/img/image-20200425001851453.png)
+
+## 日志配置 
+
+![image-20200425192811193](/img/image-20200425192811193.png)
+
+```
+我们只需要修改 /etc/sysconfig/keepalived 就可以了
+把KEEPALIVED_OPTIONS="-D" 修改为KEEPALIVED_OPTIONS="-D -d -S 0"
+最后设置syslog，修改/etc/rsyslog.conf
+最后添加：
+# keepalived -S 0 
+local0.*                                                /var/log/keepalived.log
+重新启动日志
+/etc/init.d/rsyslog restart
+使用以下命令进行验证
+/etc/init.d/keepalived restart;tailf /var/log/keepalived.log
+```
 
