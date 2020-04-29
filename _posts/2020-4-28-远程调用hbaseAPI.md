@@ -29,11 +29,11 @@ author: Clear Li
 
 ### 改写Ubuntu的hosts文件
 
-![image-20200428173143698](../img/image-20200428173143698.png)
+![image-20200428173143698](/img/image-20200428173143698.png)
 
 改本地hosts文件
 
-![image-20200428173358174](../img/image-20200428173358174.png)
+![image-20200428173358174](/img/image-20200428173358174.png)
 
 ### 创建maven工程加入依赖如下
 
@@ -204,7 +204,7 @@ public class CreateTest {
 
 ### HBaseAdmin的API
 
-![image-20200428181459875](../img/image-20200428181459875.png)
+![image-20200428181459875](/img/image-20200428181459875.png)
 
 #### 例子
 
@@ -216,7 +216,7 @@ admin = connection.getAdmin();
 
 ### HTableDescriptor的API
 
-![image-20200428182702791](../img/image-20200428182702791.png)
+![image-20200428182702791](/img/image-20200428182702791.png)
 
 #### 例子
 
